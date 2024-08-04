@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Churn Prediction</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(to right, #87CEFA, #1E90FF);
+            background-size: 200% 200%;
+            animation: flowing-gradient 10s ease infinite;
+        }
+
+        @keyframes flowing-gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 200vh;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 36px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .form-section {
+            width: 100%;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+        }
+
+        .form-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-bottom: 1rem;
+            background-color: #e6f2ff;
+            border-radius: 4px;
+            padding: 10px;
+        }
+
+        .form-group:nth-child(even) {
+            background-color: #ccf0ff;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+
+        button {
+            grid-column: span 2;
+            width: 100%;
+            padding: 10px;
+            background: #1E90FF;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background: #104E8B;
+        }
+
+        .instructions {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Customer Churn Predictor</h1>
+        <div class="form-section">
+            <h3>Input Form</h3>
+            <form action="/result" method="POST">
+                <div class="form-group">
+                    <label for="query1">SeniorCitizen:</label>
+                    <input type="text" class="form-control" id="query1" name="query1" placeholder="Enter 1 for Yes, 0 for No" value="{{ query1 }}" autofocus>
+                </div>
+                <div class="form-group">
+                    <label for="query2">MonthlyCharges:</label>
+                    <input type="text" class="form-control" id="query2" name="query2" placeholder="Enter the monthly charges amount" value="{{ query2 }}">
+                </div>
+                <div class="form-group">
+                    <label for="query3">TotalCharges:</label>
+                    <input type="text" class="form-control" id="query3" name="query3" placeholder="Enter the total charges amount" value="{{ query3 }}">
+                </div>
+                <div class="form-group">
+                    <label for="query4">Gender:</label>
+                    <input type="text" class="form-control" id="query4" name="query4" placeholder="Enter Male or Female" value="{{ query4 }}">
+                </div>
+                <div class="form-group">
+                    <label for="query5">Partner:</label>
+                    <input type="text" class="form-control" id="query5" name="query5" placeholder="Enter Yes or No" value="{{ query5 }}">
+                </div>
+                <div class="form-group">
+                    <label for="query6">Dependents:</label>
+                    <input type="text" class="form-control" id="query6" name="query6" placeholder="Enter Yes or No" value="{{ query6 }}">
+                </div>
+                <div class="form-group">
+                    <label for="query7">PhoneService:</label>
+                    <input type="text" class="form-control" id="query7" name="query7" placeholder="Enter Yes or No" value="{{ query7 }}">
+                </div>
+                <div class="form-group">
+                    <label for="query8">MultipleLines:</label>
+                    <input type="text" class="form-control" id="query8" name="query8" placeholder="Enter Yes or No" value="{{ query8 }}">
+                </div>
+                <div class="form-group">
+                    <label for="query9">InternetService:</label>
+                    <input type="text" class="form-control" id="query9" name="query9" placeholder="Enter DSL, Fiber optic, or No" value="{{ query9 }}">
+                </div>
+                <div class="form-group">
+                    <label for="query10">OnlineSecurity:</label>
+                    <input type="text" class="form-control" id="query10" name="query10" placeholder="Enter Yes, No, or No internet service" value="{{ query10 }}">
+                </div>
+                <div class="form-group">
+                    <label for="query11">OnlineBackup:</label>
+                    <input type="text" class="form-control" id="query11" name="query11" placeholder="Enter Yes, No, or No internet service" value="{{ query11 }}">
+                </div>
+                <div class="form-group">
+                    <label for="query12">DeviceProtection:</label>
+                    <input type="text" class="form-control" id="query12" name="query12" placeholder="Enter Yes or No" value="{{ query12 }}">
+                </div>
+                <div class="form-group">
+                    <label for="query13">TechSupport:</label>
+                    <input type="text" class="form-control" id="query13" name="query13" placeholder="Enter Yes or No" value="{{ query13 }}">
+                </div>
+                <div class="form-group">
+                    <label for="query14">StreamingTV:</label>
+                    <input type="text" class="form-control" id="query14" name="query14" placeholder="Enter Yes or No" value="{{ query14 }}">
+                </div>
+                <div class="form-group">
+                    <label for="query15">StreamingMovies:</label>
+                    <input type="text" class="form-control" id="query15" name="query15" placeholder="Enter Yes or No" value="{{ query15 }}">
+                </div>
+                <div class="form-group">
+                    <label for="query16">Contract:</label>
+                    <input type="text" class="form-control" id="query16" name="query16" placeholder="Enter Month-to-month, One year, or Two year" value="{{ query16 }}">
+                </div>
+                <div class="form-group">
+                    <label for="query17">PaperlessBilling:</label>
+                    <input type="text" class="form-control" id="query17" name="query17" placeholder="Enter Yes or No" value="{{ query17 }}">
+                </div>
+                <div class="form-group">
+                    <label for="query18">PaymentMethod:</label>
+                    <input type="text" class="form-control" id="query18" name="query18" placeholder="Enter method" value="{{ query18 }}">
+                </div>
+                <div class="form-group">
+                    <label for="query19">Tenure:</label>
+                    <input type="text" class="form-control" id="query19" name="query19" placeholder="Enter tenure in months" value="{{ query19 }}">
+                </div>
+                <button type="submit">Predict</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
